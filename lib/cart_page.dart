@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cart_store.dart';
 import 'address_form_page.dart'; // ปรับ path ตามที่วางไฟล์
+import 'widgets/simple_network_image_widget.dart';
 
 // ===== ที่อยู่จัดส่ง (ค่าตั้งต้น) =====
 ShippingAddress _addr = const ShippingAddress(
@@ -48,9 +49,16 @@ class _CartPageState extends State<CartPage> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(it.image, width: 64, height: 64, fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) =>
-                              const SizedBox(width: 64, height: 64, child: ColoredBox(color: Color(0xFFEFEFEF))),
+                        child: SimpleSmartImageWidget(
+                          imageUrl: it.image,
+                          width: 64,
+                          height: 64,
+                          fit: BoxFit.cover,
+                          errorWidget: const SizedBox(
+                            width: 64,
+                            height: 64,
+                            child: ColoredBox(color: Color(0xFFEFEFEF)),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),

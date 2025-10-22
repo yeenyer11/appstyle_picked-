@@ -153,6 +153,24 @@ service firebase.storage {
       ) && isValidSize();
     }
 
+r    // Cart (Public read for cart item images, Admin write/delete)
+    match /cart/{cartId} {
+      allow read: if true;
+      allow write, delete: if isAuthenticated()
+                             && isAdmin(request.auth.token.email)
+                             && isImage()
+                             && isValidSize();
+    }
+
+    // Cart items (Public read for cart item images, Admin write/delete)
+    match /cart/{cartId}/items/{itemId} {
+      allow read: if true;
+      allow write, delete: if isAuthenticated()
+                             && isAdmin(request.auth.token.email)
+                             && isImage()
+                             && isValidSize();
+    }
+
     // Default rule - deny all other access
     match /{allPaths=**} {
       allow read, write: if false;

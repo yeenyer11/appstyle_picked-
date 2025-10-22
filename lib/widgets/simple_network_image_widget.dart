@@ -23,10 +23,14 @@ class SimpleNetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Debug SimpleNetworkImageWidget - imageUrl: $imageUrl');
+    print('Debug SimpleNetworkImageWidget - startsWith http: ${imageUrl.startsWith('http')}');
+    
     Widget imageWidget;
 
     if (imageUrl.startsWith('http')) {
       // Network image
+      print('Debug SimpleNetworkImageWidget - Using Image.network');
       imageWidget = Image.network(
         imageUrl,
         fit: fit,
@@ -36,18 +40,23 @@ class SimpleNetworkImageWidget extends StatelessWidget {
           if (loadingProgress == null) return child;
           return placeholder ?? _buildLoadingPlaceholder(loadingProgress);
         },
-        errorBuilder: (context, error, stackTrace) => 
-          errorWidget ?? _buildErrorWidget(error),
+        errorBuilder: (context, error, stackTrace) {
+          print('Debug SimpleNetworkImageWidget - Network error: $error');
+          return errorWidget ?? _buildErrorWidget(error);
+        },
       );
     } else {
       // Asset image
+      print('Debug SimpleNetworkImageWidget - Using Image.asset');
       imageWidget = Image.asset(
         imageUrl,
         fit: fit,
         width: width,
         height: height,
-        errorBuilder: (context, error, stackTrace) => 
-          errorWidget ?? _buildErrorWidget(error),
+        errorBuilder: (context, error, stackTrace) {
+          print('Debug SimpleNetworkImageWidget - Asset error: $error');
+          return errorWidget ?? _buildErrorWidget(error);
+        },
       );
     }
 
@@ -189,10 +198,15 @@ class SimpleSmartImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Debug SimpleSmartImageWidget - imageUrl: $imageUrl');
+    print('Debug SimpleSmartImageWidget - isEmpty: ${imageUrl?.isEmpty}');
+    
     if (imageUrl == null || imageUrl!.isEmpty) {
+      print('Debug SimpleSmartImageWidget - Using empty widget');
       return _buildEmptyWidget();
     }
 
+    print('Debug SimpleSmartImageWidget - Using SimpleNetworkImageWidget');
     return SimpleNetworkImageWidget(
       imageUrl: imageUrl!,
       fit: fit,
